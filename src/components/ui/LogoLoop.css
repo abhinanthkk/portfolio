@@ -1,0 +1,229 @@
+/* ── LogoLoop — react-bits port ─────────────────────────────────────────── */
+
+.logoloop {
+  position: relative;
+  overflow: hidden; /* CRITICAL: clips the track so the seam is never visible */
+
+  --logoloop-gap: 32px;
+  --logoloop-logoHeight: 28px;
+  --logoloop-fadeColorAuto: #09090B; /* matches portfolio background */
+}
+
+.logoloop--vertical {
+  height: 100%;
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* Extra padding so scaled logos aren't clipped on hover */
+.logoloop--scale-hover {
+  padding-top: calc(var(--logoloop-logoHeight) * 0.15);
+  padding-bottom: calc(var(--logoloop-logoHeight) * 0.15);
+}
+
+/* ── Track ── */
+.logoloop__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  user-select: none;
+  position: relative;
+  z-index: 0;
+}
+
+.logoloop--vertical .logoloop__track {
+  flex-direction: column;
+  height: max-content;
+  width: 100%;
+}
+
+/* ── List (one copy of the item sequence) ── */
+.logoloop__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.logoloop--vertical .logoloop__list {
+  flex-direction: column;
+}
+
+/* ── Individual item ── */
+.logoloop__item {
+  flex: 0 0 auto;
+  /* Normalize every icon to a consistent square container */
+  width:  calc(var(--logoloop-logoHeight) * 1.6);
+  height: calc(var(--logoloop-logoHeight) * 1.6);
+  margin-right: var(--logoloop-gap);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  /* GPU layer */
+  transform: translateZ(0);
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Tooltip anchor */
+  position: relative;
+}
+
+/* Keep last item gap so copies tile seamlessly */
+.logoloop__item:last-child {
+  margin-right: var(--logoloop-gap);
+}
+
+.logoloop--vertical .logoloop__item {
+  margin-right: 0;
+  margin-bottom: var(--logoloop-gap);
+  width: 100%;
+}
+
+.logoloop--vertical .logoloop__item:last-child {
+  margin-right: 0;
+  margin-bottom: var(--logoloop-gap);
+}
+
+/* ── Node content (react-icons etc.) ── */
+.logoloop__node {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Scale icon to fill the container at ~60% */
+  font-size: calc(var(--logoloop-logoHeight) * 0.9);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ── Image content ── */
+.logoloop__item img {
+  height: calc(var(--logoloop-logoHeight) * 0.9);
+  width: auto;
+  max-width: calc(var(--logoloop-logoHeight) * 1.4);
+  display: block;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* ── Hover: scale + glow ── */
+.logoloop--scale-hover .logoloop__item:hover {
+  transform: translateZ(0) translateY(-4px) scale(1.12);
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.08);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.25), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Tooltip ── */
+.logoloop__item::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #d1d5db;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 20;
+}
+
+.logoloop--scale-hover .logoloop__item:hover::after {
+  opacity: 1;
+}
+
+/* ── Link wrapper ── */
+.logoloop__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.logoloop__link:focus-visible {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+/* ── Fade edges ── */
+.logoloop--fade::before,
+.logoloop--fade::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(40px, 10%, 100px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.logoloop--fade::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
+    transparent 100%
+  );
+}
+
+.logoloop--fade::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%,
+    transparent 100%
+  );
+}
+
+/* ── Vertical fade ── */
+.logoloop--vertical.logoloop--fade::before,
+.logoloop--vertical.logoloop--fade::after {
+  left: 0; right: 0; width: 100%;
+  height: clamp(24px, 8%, 80px);
+}
+.logoloop--vertical.logoloop--fade::before {
+  top: 0; bottom: auto;
+  background: linear-gradient(to bottom, var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%, transparent 100%);
+}
+.logoloop--vertical.logoloop--fade::after {
+  bottom: 0; top: auto;
+  background: linear-gradient(to top, var(--logoloop-fadeColor, var(--logoloop-fadeColorAuto)) 0%, transparent 100%);
+}
+
+/* ── Responsive sizing ── */
+@media (max-width: 768px) {
+  .logoloop {
+    --logoloop-logoHeight: 22px;
+    --logoloop-gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoloop {
+    --logoloop-logoHeight: 18px;
+    --logoloop-gap: 16px;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .logoloop__track {
+    transform: translate3d(0, 0, 0) !important;
+  }
+  .logoloop__item {
+    transition: none !important;
+  }
+}
