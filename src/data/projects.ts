@@ -62,6 +62,38 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: 'portfolio-website',
+    title: 'Portfolio Website',
+    shortDescription:
+      'A modern, responsive developer portfolio showcasing my projects, technical skills, certifications, and experience with an interactive UI and integrated contact system.',
+    detailedDescription:
+      'Designed and developed a production-ready personal portfolio to showcase my software development and AI projects. The website features a modern responsive interface, smooth animations, project showcase, certifications, skills, experience, and an integrated contact form powered by secure server-side email functionality. The portfolio is optimized for performance, accessibility, and recruiter-friendly navigation.',
+    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Node.js', 'Vercel Functions', 'Nodemailer', 'GitHub', 'Vercel'],
+    keyFeatures: [
+      'Modern responsive UI with dark theme and mobile-first design',
+      'Interactive animations powered by Framer Motion',
+      'Dynamic project showcase with search and filter capabilities',
+      'Skills & certifications section with organized categories',
+      'Contact form with email notifications and automatic email replies',
+      'GitHub and LinkedIn integration throughout the site',
+      'SEO optimized with structured data and Open Graph tags',
+      'Production deployment on Vercel with CI/CD pipeline',
+    ],
+    challenges: [
+      'Building a responsive dark-themed UI with smooth animations that works consistently across all devices and browsers',
+      'Implementing a serverless contact form with Gmail SMTP integration that sends both owner notifications and visitor auto-replies',
+      'Optimizing performance, SEO, and accessibility while maintaining rich interactivity and visual polish',
+    ],
+    impact:
+      'Provides a professional online presence that showcases technical skills and projects to potential employers, with a fully functional contact system for recruiter outreach.',
+    category: 'Full Stack',
+    status: 'Completed',
+    year: 2026,
+    githubUrl: 'https://github.com/abhinanthkk/portfolio',
+    liveUrl: 'https://portfolio-abhinanthkk.vercel.app',
+    featured: true,
+  },
+  {
     id: 'cico',
     title: 'CICO',
     shortDescription:
