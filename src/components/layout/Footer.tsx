@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Heart, ArrowUp } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
 import { resumeData } from '@/data/resume';
 
 export default function Footer() {
@@ -76,9 +76,8 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500 flex items-center gap-1">
-            Built with <Heart className="w-3.5 h-3.5 text-red-500 inline" /> by
-            Abhinanth K K &copy; {currentYear}
+          <p className="text-sm text-gray-500">
+            Developed by <span className="text-primary">Abhinanth K K</span> &copy; {currentYear}
           </p>
 
           <button
