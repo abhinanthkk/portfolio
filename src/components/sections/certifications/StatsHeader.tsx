@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Award, Trophy, Building2 } from 'lucide-react';
+import { useMediaQuery } from '@/hooks';
 
 interface StatsHeaderProps {
   certCount: number;
@@ -32,10 +33,36 @@ const stats = (certCount: number, achievementCount: number, orgCount: number) =>
 ];
 
 export default function StatsHeader({ certCount, achievementCount, orgCount }: StatsHeaderProps) {
+  const isDesktop = useMediaQuery('(min-width: 640px)');
   const items = stats(certCount, achievementCount, orgCount);
 
+  if (isDesktop) {
+    return (
+      <div className="grid grid-cols-3 gap-4 mb-12">
+        {items.map((item, index) => (
+          <motion.div
+            key={item.label}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1, duration: 0.4 }}
+            className="glass gradient-border p-5 flex items-center gap-4"
+          >
+            <div className={`p-2.5 rounded-xl ${item.bg} shrink-0`}>
+              <item.icon className={`w-5 h-5 ${item.color}`} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs text-gray-500 mb-0.5 truncate">{item.label}</p>
+              <p className={`text-xl font-bold ${item.color} truncate`}>{item.value}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-3 gap-4 mb-12">
+    <div className="flex flex-col gap-3 mb-12">
       {items.map((item, index) => (
         <motion.div
           key={item.label}
@@ -43,15 +70,15 @@ export default function StatsHeader({ certCount, achievementCount, orgCount }: S
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: index * 0.1, duration: 0.4 }}
-          className="glass gradient-border p-5 flex items-center gap-4"
+          className="glass w-full flex items-center justify-between px-4 py-3.5 rounded-xl"
         >
-          <div className={`p-2.5 rounded-xl ${item.bg} shrink-0`}>
-            <item.icon className={`w-5 h-5 ${item.color}`} />
+          <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-lg ${item.bg}`}>
+              <item.icon className={`w-4 h-4 ${item.color}`} />
+            </div>
+            <span className="text-sm text-gray-300 font-medium">{item.label}</span>
           </div>
-          <div className="min-w-0">
-            <p className="text-xs text-gray-500 mb-0.5 truncate">{item.label}</p>
-            <p className={`text-xl font-bold ${item.color} truncate`}>{item.value}</p>
-          </div>
+          <span className={`text-lg font-bold ${item.color}`}>{item.value}</span>
         </motion.div>
       ))}
     </div>

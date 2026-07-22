@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ExternalLink, Calendar } from 'lucide-react';
 import type { Certification } from '@/data/certifications';
+import { useMediaQuery } from '@/hooks';
 
 interface CertificateCardProps {
   cert: Certification;
@@ -31,6 +32,7 @@ function getIssuerColor(issuer: string): string {
 }
 
 export default function CertificateCard({ cert, index }: CertificateCardProps) {
+  const isDesktop = useMediaQuery('(min-width: 768px)');
   const link = cert.verifyLink ?? cert.certificate;
 
   const handleOpen = () => {
@@ -49,24 +51,26 @@ export default function CertificateCard({ cert, index }: CertificateCardProps) {
       onClick={handleOpen}
     >
       <div className="glass gradient-border p-6 h-full flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/20 hover:bg-white/[0.05]">
-        {/* Thumbnail / Placeholder */}
-        <div className="mb-4">
-          {cert.thumbnail ? (
-            <img
-              src={cert.thumbnail}
-              alt={cert.title}
-              className="w-full h-32 object-cover rounded-xl border border-white/[0.06]"
-            />
-          ) : (
-            <div
-              className={`w-full h-28 rounded-xl bg-gradient-to-br ${colorClass.split(' ').slice(0, 2).join(' ')} flex items-center justify-center border border-white/[0.06]`}
-            >
-              <span className={`text-3xl font-black ${colorClass.split(' ')[2]}`}>
-                {getIssuerInitials(cert.issuer)}
-              </span>
-            </div>
-          )}
-        </div>
+        {/* Thumbnail — only rendered on desktop */}
+        {isDesktop && (
+          <div className="mb-4">
+            {cert.thumbnail ? (
+              <img
+                src={cert.thumbnail}
+                alt={cert.title}
+                className="w-full h-32 object-cover rounded-xl border border-white/[0.06]"
+              />
+            ) : (
+              <div
+                className={`w-full h-28 rounded-xl bg-gradient-to-br ${colorClass.split(' ').slice(0, 2).join(' ')} flex items-center justify-center border border-white/[0.06]`}
+              >
+                <span className={`text-3xl font-black ${colorClass.split(' ')[2]}`}>
+                  {getIssuerInitials(cert.issuer)}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Issuer Badge */}
         <div className="flex items-center justify-between mb-3">
