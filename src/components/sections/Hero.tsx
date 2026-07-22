@@ -1,9 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Download, ChevronDown, Sparkles } from 'lucide-react';
+import { Github, Linkedin, Mail, Download, ChevronDown, Sparkles, Folder, User } from 'lucide-react';
 import { useTypingEffect } from '@/hooks';
 import { resumeData } from '@/data/resume';
-import { heroSocialLinks } from '@/data/socialLinks';
+import { Dock, DockItem } from '@/components/ui/Dock';
 
 /** Official WhatsApp brand icon as an inline SVG — matches lucide w-5 h-5 sizing */
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -142,6 +142,21 @@ function GlowBlobs({ mouseX, mouseY }: { mouseX: number; mouseY: number }) {
 export default function Hero() {
   const typedText = useTypingEffect(resumeData.titles, 100, 50, 2000);
   const [mouseForBlob, setMouseForBlob] = useState({ x: 0, y: 0 });
+  const [dockSize, setDockSize] = useState({ magnification: 60, baseItemSize: 44, panelHeight: 64 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setDockSize({ magnification: 56, baseItemSize: 42, panelHeight: 56 });
+      } else {
+        setDockSize({ magnification: 60, baseItemSize: 44, panelHeight: 64 });
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -266,9 +281,9 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9 }}
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+              className="flex flex-col items-center gap-6"
             >
-              {/* Group 1: CTA buttons */}
+              {/* CTA buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                   href="/abhinanthCV.pdf"
@@ -287,39 +302,75 @@ export default function Hero() {
                 </a>
               </div>
 
-              {/* Group 2: Social icons — always on one row, never wrap */}
-              <div className="flex items-center gap-3 flex-nowrap">
-                {heroSocialLinks.map((link) => (
-                  <div key={link.id} className="relative group shrink-0">
-                    <a
-                      href={link.href}
-                      title={link.title}
-                      aria-label={link.label}
-                      {...(link.external
-                        ? { target: '_blank', rel: 'noopener noreferrer' }
-                        : {})}
-                      {...(link.id === 'email'
-                        ? {
-                            onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
-                              e.preventDefault();
-                              window.location.href = link.href;
-                            },
-                          }
-                        : {})}
-                      className="p-3 rounded-xl glass glass-hover text-gray-400 hover:text-white hover:shadow-md hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center"
-                    >
-                      {link.id === 'github'    && <Github       className="w-5 h-5" />}
-                      {link.id === 'linkedin'  && <Linkedin     className="w-5 h-5" />}
-                      {link.id === 'whatsapp'  && <WhatsAppIcon className="w-5 h-5" />}
-                      {link.id === 'email'     && <Mail         className="w-5 h-5" />}
-                    </a>
-                    {/* Tooltip */}
-                    <span className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white/10 backdrop-blur-sm border border-white/10 px-2 py-1 text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      {link.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              {/* Dock Navigation */}
+              <Dock
+                magnification={dockSize.magnification}
+                distance={120}
+                baseItemSize={dockSize.baseItemSize}
+                panelHeight={dockSize.panelHeight}
+              >
+                <DockItem
+                  label="GitHub"
+                  onClick={() => window.open(resumeData.contact.github, '_blank', 'noopener,noreferrer')}
+                >
+                  <Github className="w-5 h-5" />
+                </DockItem>
+
+                <DockItem
+                  label="LinkedIn"
+                  onClick={() => window.open(resumeData.contact.linkedin, '_blank', 'noopener,noreferrer')}
+                >
+                  <Linkedin className="w-5 h-5" />
+                </DockItem>
+
+                <DockItem
+                  label="Resume"
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = '/abhinanthCV.pdf';
+                    link.download = 'Abhinanth_K_K_Resume.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                >
+                  <Download className="w-5 h-5" />
+                </DockItem>
+
+                <DockItem
+                  label="Email"
+                  onClick={() => {
+                    window.location.href = `mailto:${resumeData.contact.email}`;
+                  }}
+                >
+                  <Mail className="w-5 h-5" />
+                </DockItem>
+
+                <DockItem
+                  label="WhatsApp"
+                  onClick={() => window.open(resumeData.contact.whatsapp, '_blank', 'noopener,noreferrer')}
+                >
+                  <WhatsAppIcon className="w-5 h-5" />
+                </DockItem>
+
+                <DockItem
+                  label="Projects"
+                  onClick={() => {
+                    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  <Folder className="w-5 h-5" />
+                </DockItem>
+
+                <DockItem
+                  label="Contact"
+                  onClick={() => {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  <User className="w-5 h-5" />
+                </DockItem>
+              </Dock>
             </motion.div>
           </div>
         </div>
