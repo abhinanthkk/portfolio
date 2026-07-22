@@ -266,10 +266,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
             >
               {/* Group 1: CTA buttons */}
-              <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                   href="/abhinanthCV.pdf"
                   download
