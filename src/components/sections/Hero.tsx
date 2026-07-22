@@ -234,10 +234,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl font-extrabold mb-4 tracking-tight leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-extrabold mb-4 tracking-tight leading-tight text-balance"
             >
               Hi, I&apos;m{' '}
-              <span className="gradient-text">{resumeData.name}</span>
+              <span className="gradient-text whitespace-nowrap">{resumeData.name}</span>
             </motion.h1>
 
             {/* Typing Effect */}
