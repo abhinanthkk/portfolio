@@ -90,7 +90,7 @@ export const projects: Project[] = [
     status: 'Completed',
     year: 2026,
     githubUrl: 'https://github.com/abhinanthkk/portfolio',
-    liveUrl: 'https://portfolio-abhinanthkk.vercel.app',
+    liveUrl: 'https://portfolio-abhiee.vercel.app/',
     featured: true,
   },
   {

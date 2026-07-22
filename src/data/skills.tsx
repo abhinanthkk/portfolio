@@ -29,14 +29,14 @@ export const skillCategories: SkillCategory[] = [
     title: 'Programming Languages',
     icon: 'Code2',
     column: 'left',
-    skills: ['Python', 'C', 'JavaScript'],
+    skills: ['Python', 'C'],
   },
   {
     id: 'frontend',
     title: 'Frontend',
     icon: 'Layout',
     column: 'left',
-    skills: ['HTML5', 'CSS3', 'React', 'Tailwind CSS'],
+    skills: ['HTML5', 'CSS3'],
   },
   {
     id: 'backend',
@@ -50,7 +50,7 @@ export const skillCategories: SkillCategory[] = [
     title: 'Databases',
     icon: 'Database',
     column: 'left',
-    skills: ['MongoDB', 'MySQL', 'SQLite'],
+    skills: ['PostgreSQL', 'MongoDB', 'MySQL', 'SQLite'],
   },
   {
     id: 'ai-ml',
